@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K3: Kiểm tra mật khẩu khớp</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            color: #4facfe;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-title {
+            text-align: center;
+            color: #4facfe;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        input.error {
+            border-color: #ff4757;
+        }
+
+        input.success {
+            border-color: #2ed573;
+        }
+
+        .error-message {
+            color: #ff4757;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .strength-bar-fill {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+
+        .strength-weak { 
+            width: 33%; 
+            background: #ff4757; 
+        }
+
+        .strength-medium { 
+            width: 66%; 
+            background: #ffa502; 
+        }
+
+        .strength-strong { 
+            width: 100%; 
+            background: #2ed573; 
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .submit-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message h3 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .info-box h4 {
+            color: #4facfe;
+            margin-bottom: 8px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← Quay về trang chủ</a>
+
+    <div class="container">
+        <h1>🔐 K3: Kiểm tra mật khẩu</h1>
+
+        <div class="form-container">
+            <h2 class="form-title">Đăng ký tài khoản</h2>
+
+            <div class="info-box">
+                <h4>📋 Yêu cầu mật khẩu:</h4>
+                <ul>
+                    <li>Độ dài tối thiểu: 6 ký tự</li>
+                    <li>Nên có chữ hoa, chữ thường, số và ký tự đặc biệt</li>
+                    <li>Mật khẩu xác nhận phải khớp với mật khẩu</li>
+                </ul>
+            </div>
+
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Họ và tên *</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        placeholder="Nhập họ và tên"
+                        required
+                    >
+                    <div class="error-message" id="nameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="example@email.com"
+                        required
+                    >
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mật khẩu *</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Nhập mật khẩu"
+                        required
+                    >
+                    <div class="password-strength" id="passwordStrength"></div>
+                    <div class="strength-bar">
+                        <div class="strength-bar-fill" id="strengthBar"></div>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu *</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        placeholder="Nhập lại mật khẩu"
+                        required
+                    >
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <button type="submit" class="submit-button">Đăng ký</button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>✅ Đăng ký thành công!</h3>
+                <p>Thông tin của bạn đã được xác nhận. Chào mừng bạn đến với hệ thống!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lấy các elements
+        const form = document.getElementById('registrationForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const successMessage = document.getElementById('successMessage');
+
+        /**
+         * Kiểm tra độ mạnh của mật khẩu
+         * @param {string} password - Mật khẩu cần kiểm tra
+         * @returns {object} - Object chứa strength level và message
+         */
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('passwordStrength');
+
+            if (password.length === 0) {
+                strengthBar.className = 'strength-bar-fill';
+                strengthText.textContent = '';
+                return;
+            }
+
+            // Kiểm tra độ dài
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+
+            // Kiểm tra chữ thường
+            if (/[a-z]/.test(password)) strength++;
+
+            // Kiểm tra chữ hoa
+            if (/[A-Z]/.test(password)) strength++;
+
+            // Kiểm tra số
+            if (/[0-9]/.test(password)) strength++;
+
+            // Kiểm tra ký tự đặc biệt
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+            // Hiển thị kết quả
+            if (strength <= 2) {
+                strengthBar.className = 'strength-bar-fill strength-weak';
+                strengthText.textContent = '💔 Yếu';
+                strengthText.style.color = '#ff4757';
+            } else if (strength <= 4) {
+                strengthBar.className = 'strength-bar-fill strength-medium';
+                strengthText.textContent = '💛 Trung bình';
+                strengthText.style.color = '#ffa502';
+            } else {
+                strengthBar.className = 'strength-bar-fill strength-strong';
+                strengthText.textContent = '💚 Mạnh';
+                strengthText.style.color = '#2ed573';
+            }
+        }
+
+        /**
+         * Validate email format
+         * @param {string} email - Email cần validate
+         * @returns {boolean} - True nếu email hợp lệ
+         */
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        /**
+         * Hiển thị lỗi cho một input field
+         * @param {HTMLElement} input - Input element
+         * @param {string} message - Thông báo lỗi
+         */
+        function showError(input, message) {
+            input.classList.add('error');
+            input.classList.remove('success');
+            const errorDiv = document.getElementById(input.id + 'Error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        /**
+         * Hiển thị success cho một input field
+         * @param {HTMLElement} input - Input element
+         */
+        function showSuccess(input) {
+            input.classList.remove('error');
+            input.classList.add('success');
+            const errorDiv = document.getElementById(input.id + 'Error');
+            errorDiv.textContent = '';
+            errorDiv.classList.remove('show');
+        }
+
+        /**
+         * Clear tất cả errors
+         */
+        function clearErrors() {
+            const inputs = [nameInput, emailInput, passwordInput, confirmPasswordInput];
+            inputs.forEach(input => {
+                input.classList.remove('error', 'success');
+                const errorDiv = document.getElementById(input.id + 'Error');
+                errorDiv.textContent = '';
+                errorDiv.classList.remove('show');
+            });
+        }
+
+        // Event listener cho password input để kiểm tra độ mạnh
+        passwordInput.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Event listener cho confirm password để kiểm tra trực tiếp
+        confirmPasswordInput.addEventListener('input', function() {
+            if (this.value && passwordInput.value) {
+                if (this.value === passwordInput.value) {
+                    showSuccess(this);
+                } else {
+                    showError(this, 'Mật khẩu xác nhận không khớp');
+                }
+            }
+        });
+
+        // Xử lý form submit
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ẩn success message nếu đang hiển thị
+            successMessage.classList.remove('show');
+            
+            let isValid = true;
+
+            // Validate tên
+            if (nameInput.value.trim() === '') {
+                showError(nameInput, 'Vui lòng nhập họ và tên');
+                isValid = false;
+            } else if (nameInput.value.trim().length < 2) {
+                showError(nameInput, 'Tên phải có ít nhất 2 ký tự');
+                isValid = false;
+            } else {
+                showSuccess(nameInput);
+            }
+
+            // Validate email
+            if (emailInput.value.trim() === '') {
+                showError(emailInput, 'Vui lòng nhập email');
+                isValid = false;
+            } else if (!validateEmail(emailInput.value)) {
+                showError(emailInput, 'Email không hợp lệ');
+                isValid = false;
+            } else {
+                showSuccess(emailInput);
+            }
+
+            // Validate password
+            if (passwordInput.value === '') {
+                showError(passwordInput, 'Vui lòng nhập mật khẩu');
+                isValid = false;
+            } else if (passwordInput.value.length < 6) {
+                showError(passwordInput, 'Mật khẩu phải có ít nhất 6 ký tự');
+                isValid = false;
+            } else {
+                showSuccess(passwordInput);
+            }
+
+            // Validate confirm password
+            if (confirmPasswordInput.value === '') {
+                showError(confirmPasswordInput, 'Vui lòng xác nhận mật khẩu');
+                isValid = false;
+            } else if (confirmPasswordInput.value !== passwordInput.value) {
+                showError(confirmPasswordInput, 'Mật khẩu xác nhận không khớp');
+                isValid = false;
+            } else {
+                showSuccess(confirmPasswordInput);
+            }
+
+            // Nếu tất cả đều hợp lệ
+            if (isValid) {
+                // Hiển thị thông báo thành công
+                successMessage.classList.add('show');
+                
+                // Reset form sau 2 giây
+                setTimeout(() => {
+                    form.reset();
+                    clearErrors();
+                    document.getElementById('passwordStrength').textContent = '';
+                    document.getElementById('strengthBar').className = 'strength-bar-fill';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

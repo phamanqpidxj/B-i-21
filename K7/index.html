@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K7: Parallax Scrolling</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Parallax sections */
+        .parallax-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        /* Different backgrounds for each section */
+        .bg-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .bg-2 {
+            background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920');
+            background-size: cover;
+        }
+
+        .bg-3 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .bg-4 {
+            background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920');
+            background-size: cover;
+        }
+
+        .bg-5 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .bg-6 {
+            background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920');
+            background-size: cover;
+        }
+
+        /* Content container */
+        .content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+        }
+
+        .content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s;
+        }
+
+        .content p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s 0.2s both;
+        }
+
+        .content .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Static content sections */
+        .static-section {
+            padding: 100px 20px;
+            background: white;
+        }
+
+        .static-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .static-content h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .static-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: white;
+            font-size: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .content h1 {
+                font-size: 2.5rem;
+            }
+
+            .content p {
+                font-size: 1.1rem;
+            }
+
+            .static-content h2 {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← Quay về trang chủ</a>
+
+    <!-- Section 1 -->
+    <section class="parallax-section">
+        <div class="parallax-bg bg-1" data-speed="0.5"></div>
+        <div class="content">
+            <div class="icon">🌄</div>
+            <h1>Parallax Scrolling</h1>
+            <p>Hiệu ứng cuộn thị sai tạo độ sâu cho trang web</p>
+        </div>
+        <div class="scroll-indicator">▼</div>
+    </section>
+
+    <!-- Static content 1 -->
+    <section class="static-section">
+        <div class="static-content">
+            <h2>✨ Parallax Effect là gì?</h2>
+            <p>
+                Parallax scrolling là một kỹ thuật thiết kế web trong đó background di chuyển chậm hơn 
+                foreground khi người dùng scroll trang. Điều này tạo ra một ảo giác về độ sâu và làm 
+                cho trải nghiệm người dùng trở nên sinh động hơn.
+            </p>
+            <p>
+                Hiệu ứng này được lấy cảm hứng từ ngành công nghiệp game, nơi background và foreground 
+                di chuyển với tốc độ khác nhau để tạo cảm giác không gian ba chiều trong môi trường 
+                hai chiều.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="parallax-section">
+        <div class="parallax-bg bg-2" data-speed="0.3"></div>
+        <div class="content">
+            <div class="icon">🏔️</div>
+            <h1>Tốc độ khác nhau</h1>
+            <p>Mỗi layer di chuyển với tốc độ riêng biệt tạo hiệu ứng 3D</p>
+        </div>
+    </section>
+
+    <!-- Static content 2 -->
+    <section class="static-section">
+        <div class="static-content">
+            <h2>🎯 Ưu điểm của Parallax Scrolling</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon">👁️</div>
+                    <h3>Hấp dẫn thị giác</h3>
+                    <p>Tạo trải nghiệm người dùng độc đáo và ấn tượng</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📱</div>
+                    <h3>Tương tác cao</h3>
+                    <p>Khuyến khích người dùng scroll và khám phá nội dung</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🎨</div>
+                    <h3>Kể chuyện</h3>
+                    <p>Tạo câu chuyện qua từng phần scroll</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">💎</div>
+                    <h3>Hiện đại</h3>
+                    <p>Phù hợp với xu hướng thiết kế web mới</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="parallax-section">
+        <div class="parallax-bg bg-3" data-speed="0.6"></div>
+        <div class="content">
+            <div class="icon">🎭</div>
+            <h1>Hiệu ứng thị sai</h1>
+            <p>Background và foreground tạo độ sâu không gian</p>
+        </div>
+    </section>
+
+    <!-- Static content 3 -->
+    <section class="static-section">
+        <div class="static-content">
+            <h2>🔧 Cách hoạt động</h2>
+            <p>
+                Parallax scrolling hoạt động bằng cách sử dụng JavaScript để lắng nghe sự kiện scroll 
+                và thay đổi vị trí của các elements dựa trên vị trí scroll hiện tại. Mỗi element có 
+                một "speed factor" riêng để kiểm soát tốc độ di chuyển của nó.
+            </p>
+            <p>
+                Trong ví dụ này, chúng ta sử dụng thuộc tính <code>transform: translateY()</code> để 
+                di chuyển background. Giá trị di chuyển được tính bằng cách nhân vị trí scroll với 
+                speed factor của mỗi element.
+            </p>
+            <p>
+                <strong>Công thức:</strong> translateY = scrollPosition × (1 - speedFactor)
+            </p>
+            <p>
+                Speed factor thấp hơn (0.3) sẽ làm element di chuyển chậm hơn, trong khi speed factor 
+                cao hơn (0.8) sẽ làm element di chuyển gần như cùng tốc độ với scroll.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="parallax-section">
+        <div class="parallax-bg bg-4" data-speed="0.4"></div>
+        <div class="content">
+            <div class="icon">🌊</div>
+            <h1>Độ sâu không gian</h1>
+            <p>Tạo cảm giác 3D trong môi trường 2D</p>
+        </div>
+    </section>
+
+    <!-- Static content 4 -->
+    <section class="static-section">
+        <div class="static-content">
+            <h2>💻 Best Practices</h2>
+            <p><strong>Những điều nên làm:</strong></p>
+            <ul style="margin-left: 20px; line-height: 2; color: #555;">
+                <li>Sử dụng transform thay vì top/left để tối ưu performance</li>
+                <li>Throttle scroll event để giảm số lần xử lý</li>
+                <li>Test trên nhiều thiết bị, đặc biệt là mobile</li>
+                <li>Đảm bảo nội dung vẫn có thể đọc được</li>
+                <li>Sử dụng ảnh có độ phân giải phù hợp</li>
+            </ul>
+            <p style="margin-top: 20px;"><strong>Những điều nên tránh:</strong></p>
+            <ul style="margin-left: 20px; line-height: 2; color: #555;">
+                <li>Không lạm dụng quá nhiều layers parallax</li>
+                <li>Tránh tốc độ di chuyển quá nhanh gây chóng mặt</li>
+                <li>Không ảnh hưởng đến khả năng truy cập (accessibility)</li>
+                <li>Cẩn thận với performance trên thiết bị yếu</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 5 -->
+    <section class="parallax-section">
+        <div class="parallax-bg bg-5" data-speed="0.7"></div>
+        <div class="content">
+            <div class="icon">🚀</div>
+            <h1>Hiệu suất cao</h1>
+            <p>Sử dụng CSS transforms để tối ưu hiệu năng</p>
+        </div>
+    </section>
+
+    <!-- Static content 5 -->
+    <section class="static-section">
+        <div class="static-content">
+            <h2>🎓 Ứng dụng thực tế</h2>
+            <p>
+                Parallax scrolling được sử dụng rộng rãi trong nhiều loại website:
+            </p>
+            <ul style="margin-left: 20px; line-height: 2; color: #555; margin-top: 15px;">
+                <li><strong>Landing pages:</strong> Giới thiệu sản phẩm/dịch vụ một cách sinh động</li>
+                <li><strong>Portfolio:</strong> Showcase công việc một cách sáng tạo</li>
+                <li><strong>Storytelling websites:</strong> Kể câu chuyện thương hiệu</li>
+                <li><strong>Product showcases:</strong> Giới thiệu tính năng sản phẩm</li>
+                <li><strong>Event websites:</strong> Tạo sự hứng thú cho sự kiện</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 6 -->
+    <section class="parallax-section">
+        <div class="parallax-bg bg-6" data-speed="0.5"></div>
+        <div class="content">
+            <div class="icon">🎉</div>
+            <h1>Trải nghiệm tuyệt vời</h1>
+            <p>Parallax scrolling làm website của bạn nổi bật và đáng nhớ</p>
+        </div>
+    </section>
+
+    <script>
+        /**
+         * Hàm xử lý parallax scrolling
+         * Được gọi mỗi khi người dùng scroll trang
+         */
+        function handleParallax() {
+            // Lấy vị trí scroll hiện tại
+            const scrollPosition = window.pageYOffset;
+
+            // Lấy tất cả các elements có parallax background
+            const parallaxElements = document.querySelectorAll('.parallax-bg');
+
+            // Duyệt qua từng element và áp dụng hiệu ứng parallax
+            parallaxElements.forEach(element => {
+                // Lấy speed factor từ data attribute (mặc định là 0.5)
+                const speed = element.getAttribute('data-speed') || 0.5;
+                
+                // Tính toán khoảng cách di chuyển
+                // Speed thấp hơn = di chuyển chậm hơn = hiệu ứng parallax rõ hơn
+                const yPos = -(scrollPosition * (1 - speed));
+                
+                // Áp dụng transform để di chuyển background
+                // Sử dụng transform thay vì top để tối ưu performance
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        }
+
+        /**
+         * Throttle function để giảm số lần gọi handleParallax
+         * Cải thiện performance khi scroll
+         */
+        let ticking = false;
+        function requestTick() {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleParallax();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        // Lắng nghe sự kiện scroll
+        window.addEventListener('scroll', requestTick);
+
+        // Gọi lần đầu khi trang load
+        handleParallax();
+    </script>
+</body>
+</html>
