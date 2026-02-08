@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TK4: Tab View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .back-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .tab-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Tab buttons */
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            background: #e8e8e8;
+            color: #333;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Tab content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-content h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .tab-content p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .tab-content ul {
+            margin-left: 20px;
+            line-height: 2;
+            color: #555;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                border-radius: 10px;
+            }
+
+            .tab-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-button">← Quay về trang chủ</a>
+        
+        <h1>📑 TK4: Tab View Component</h1>
+
+        <div class="tab-container">
+            <!-- Tab buttons -->
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab(0)">Tab 1: Giới thiệu</button>
+                <button class="tab-button" onclick="switchTab(1)">Tab 2: Tính năng</button>
+                <button class="tab-button" onclick="switchTab(2)">Tab 3: Hướng dẫn</button>
+            </div>
+
+            <!-- Tab 1 content -->
+            <div class="tab-content active">
+                <h2>🎯 Giới thiệu về Tab View</h2>
+                <p>
+                    Tab View là một component giao diện phổ biến trong thiết kế web hiện đại. 
+                    Nó cho phép người dùng chuyển đổi giữa các nhóm nội dung khác nhau mà không cần 
+                    tải lại trang hoặc điều hướng đến trang mới.
+                </p>
+                <p>
+                    Component này được xây dựng hoàn toàn bằng HTML, CSS và JavaScript thuần túy, 
+                    không sử dụng bất kỳ thư viện nào. Điều này giúp trang web load nhanh hơn và 
+                    dễ dàng tùy chỉnh theo nhu cầu.
+                </p>
+                <div class="feature-box">
+                    <h3>✨ Ưu điểm của Tab View</h3>
+                    <ul>
+                        <li>Tiết kiệm không gian hiển thị trên trang web</li>
+                        <li>Cải thiện trải nghiệm người dùng</li>
+                        <li>Dễ dàng tổ chức nội dung theo chủ đề</li>
+                        <li>Tăng tính tương tác với người dùng</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tab 2 content -->
+            <div class="tab-content">
+                <h2>🚀 Các tính năng chính</h2>
+                <p>
+                    Tab View component này được thiết kế với nhiều tính năng hiện đại để đảm bảo 
+                    trải nghiệm người dùng tốt nhất:
+                </p>
+                <ul>
+                    <li><strong>Hiệu ứng chuyển đổi mượt mà:</strong> Sử dụng CSS animations để tạo hiệu ứng fade in khi chuyển tab</li>
+                    <li><strong>Responsive design:</strong> Tự động điều chỉnh layout trên các thiết bị khác nhau</li>
+                    <li><strong>Trạng thái active rõ ràng:</strong> Tab đang được chọn có màu sắc nổi bật</li>
+                    <li><strong>Dễ dàng mở rộng:</strong> Có thể thêm nhiều tab mới một cách đơn giản</li>
+                    <li><strong>Tương thích tốt:</strong> Hoạt động trên mọi trình duyệt hiện đại</li>
+                </ul>
+                <div class="feature-box">
+                    <h3>💡 Công nghệ sử dụng</h3>
+                    <p>
+                        Component này sử dụng JavaScript để xử lý logic chuyển tab bằng cách thêm/xóa 
+                        class "active" cho các elements. CSS được sử dụng để style và tạo animations.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tab 3 content -->
+            <div class="tab-content">
+                <h2>📖 Hướng dẫn sử dụng</h2>
+                <p>
+                    Để tạo một Tab View component tương tự, bạn cần thực hiện các bước sau:
+                </p>
+                <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">Bước 1: HTML Structure</h3>
+                <p>
+                    Tạo cấu trúc HTML với các nút tab và các phần nội dung tương ứng. 
+                    Mỗi nút cần có một sự kiện onclick để xử lý chuyển tab.
+                </p>
+                
+                <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">Bước 2: CSS Styling</h3>
+                <p>
+                    Sử dụng CSS để style các tab buttons và nội dung. Tạo class "active" để 
+                    đánh dấu tab đang được chọn. Thêm transitions và animations để tạo hiệu ứng mượt.
+                </p>
+                
+                <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">Bước 3: JavaScript Logic</h3>
+                <p>
+                    Viết hàm JavaScript để xử lý việc chuyển tab. Hàm này sẽ:
+                </p>
+                <ul>
+                    <li>Xóa class "active" khỏi tất cả các tab buttons và content</li>
+                    <li>Thêm class "active" cho tab button và content được chọn</li>
+                    <li>Cập nhật trạng thái hiển thị</li>
+                </ul>
+                
+                <div class="feature-box">
+                    <h3>🎨 Tùy chỉnh</h3>
+                    <p>
+                        Bạn có thể tùy chỉnh màu sắc, kích thước, và hiệu ứng animation bằng cách 
+                        chỉnh sửa các giá trị trong phần CSS. Gradient background và box-shadow 
+                        có thể được điều chỉnh để phù hợp với thiết kế của bạn.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Hàm chuyển đổi giữa các tab
+         * @param {number} tabIndex - Index của tab cần chuyển đến (0, 1, 2,...)
+         */
+        function switchTab(tabIndex) {
+            // Lấy tất cả các tab buttons và tab contents
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Xóa class 'active' khỏi tất cả các tab buttons và contents
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Thêm class 'active' cho tab button và content được chọn
+            tabButtons[tabIndex].classList.add('active');
+            tabContents[tabIndex].classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách bài tập</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 25px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Different color schemes for variety */
+        .card.color-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card.color-2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .card.color-3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .card.color-4 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .card.color-5 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Danh sách bài tập</h1>
+        <p class="subtitle">Chọn bài tập để xem chi tiết và thực hành</p>
+
+        <!-- Bài tập Trung Bình - Khó -->
+        <div class="section">
+            <h2>📚 Bài tập Trung Bình - Khó</h2>
+            <div class="cards-container">
+                <a href="TK4/index.html" class="card color-1">
+                    <div class="card-icon">📑</div>
+                    <h3>TK4: Tab View</h3>
+                    <p>Tạo giao diện tab view với CSS và JavaScript. Chuyển đổi giữa các tab một cách mượt mà và hiển thị nội dung tương ứng.</p>
+                </a>
+
+                <a href="TK5/index.html" class="card color-2">
+                    <div class="card-icon">🎵</div>
+                    <h3>TK5: Accordion</h3>
+                    <p>Xây dựng component accordion với hiệu ứng slide toggle. Sử dụng CSS transitions để tạo chuyển động mượt mà.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bài tập Khó -->
+        <div class="section">
+            <h2>🔥 Bài tập Khó</h2>
+            <div class="cards-container">
+                <a href="K3/index.html" class="card color-3">
+                    <div class="card-icon">🔐</div>
+                    <h3>K3: Kiểm tra mật khẩu khớp</h3>
+                    <p>Tạo form đăng ký với validation. Kiểm tra tính hợp lệ của email, độ dài mật khẩu và xác nhận mật khẩu khớp nhau.</p>
+                </a>
+
+                <a href="K7/index.html" class="card color-4">
+                    <div class="card-icon">🌄</div>
+                    <h3>K7: Parallax Scrolling</h3>
+                    <p>Tạo hiệu ứng parallax scrolling với JavaScript. Các layer di chuyển với tốc độ khác nhau tạo độ sâu cho trang web.</p>
+                </a>
+
+                <a href="K8/index.html" class="card color-5">
+                    <div class="card-icon">⚖️</div>
+                    <h3>K8: Tính chỉ số BMI</h3>
+                    <p>Ứng dụng tính chỉ số BMI và phân loại. Nhập cân nặng và chiều cao để nhận kết quả với visual indicators.</p>
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <p>💻 Bài tập HTML/CSS/JavaScript - 2026</p>
+            <p>Sẵn sàng deploy trên GitHub Pages</p>
+        </footer>
+    </div>
+</body>
+</html>
